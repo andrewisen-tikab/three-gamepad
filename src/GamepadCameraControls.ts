@@ -1,12 +1,20 @@
 import CameraControls from "camera-controls";
 import * as THREE from "three";
-export interface THREESubset {
+export type THREESubset = {
   Vector3: typeof THREE.Vector3;
   [key: string]: any;
-}
+};
 
 let _v3A: THREE.Vector3;
 let _v3B: THREE.Vector3;
+
+/**
+ * GamepadCameraControls extends the CameraControls class to provide camera control
+ * using a gamepad. It listens for gamepad connection and disconnection events and
+ * processes gamepad input to control the camera's rotation, movement, zoom, and elevation.
+ *
+ * @extends CameraControls
+ */
 export class GamepadCameraControls extends CameraControls {
   private _gamepadIndex: number | null = null;
 
@@ -44,11 +52,35 @@ export class GamepadCameraControls extends CameraControls {
     });
   }
 
+  /**
+   * Checks if a gamepad is connected.
+   *
+   * @returns {boolean} `true` if a gamepad is connected, otherwise `false`.
+   */
   public hasGamepad(): boolean {
     return this._gamepadIndex !== null;
   }
 
-  private _handleGamepadInput(delta: number) {
+  /**
+   * Handles gamepad input to control the camera.
+   *
+   * @param _delta - The time delta since the last update.
+   *
+   * This method processes the input from a connected gamepad to control the camera's
+   * rotation, movement, zoom, and elevation. It reads the state of the gamepad's
+   * sticks, triggers, and bumpers to determine the appropriate actions.
+   *
+   * - Right stick controls camera rotation.
+   * - Left stick controls forward and sideways movement.
+   * - Right trigger controls zooming in.
+   * - Left trigger controls zooming out.
+   * - Right bumper controls moving up.
+   * - Left bumper controls moving down.
+   *
+   * The method applies thresholds to stick and trigger inputs to avoid unintentional
+   * movements due to slight stick or trigger deflections.
+   */
+  private _handleGamepadInput(_delta: number) {
     const gamepad = navigator.getGamepads()[this._gamepadIndex!];
     if (!gamepad) return;
 
@@ -58,7 +90,7 @@ export class GamepadCameraControls extends CameraControls {
     const leftStickX = gamepad.axes[0];
     const leftStickY = gamepad.axes[1];
 
-    const moveSpeed = 0.1;
+    // const moveSpeed = 0.1;
     const stickThreshold = 0.1;
 
     const rt = gamepad.buttons[7].value; // Right Trigger
@@ -105,6 +137,13 @@ export class GamepadCameraControls extends CameraControls {
     }
   }
 
+  /**
+   * Update camera position and directions.
+   * This should be called in your tick loop every time, and returns true if re-rendering is needed.
+   * @param delta
+   * @returns updated
+   * @category Methods
+   */
   public update(delta: number) {
     if (this._gamepadIndex !== null) {
       this._handleGamepadInput(delta);
@@ -120,7 +159,10 @@ export class GamepadCameraControls extends CameraControls {
    * @param enableTransition Whether to move smoothly or immediately
    * @category Methods
    */
-  sideways(distance: number, enableTransition: boolean = false): Promise<void> {
+  public sideways(
+    distance: number,
+    enableTransition: boolean = false
+  ): Promise<void> {
     _v3A.setFromMatrixColumn(this._camera.matrix, 0);
     _v3A.multiplyScalar(distance);
 
