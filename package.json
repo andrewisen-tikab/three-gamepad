@@ -9,11 +9,13 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/three": "^0.169.0",
     "camera-controls": "^2.9.0",
+    "three": "^0.169.0",
     "typescript": "^5.5.3",
     "vite": "^5.4.8"
   },
   "peerDependencies": {
-    "camera-control": "^2.9.0",
+    "camera-control": "^2.9.0"
   }
 }
