@@ -6,7 +6,7 @@
   "main": "dist/three-gamepad.js",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && vite build -c vite.config.examples.ts",
     "preview": "vite preview"
   },
   "devDependencies": {
