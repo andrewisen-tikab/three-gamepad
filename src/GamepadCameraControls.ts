@@ -1,12 +1,21 @@
 import CameraControls from "camera-controls";
 import * as THREE from "three";
+export interface THREESubset {
+  Vector3: typeof THREE.Vector3;
+  [key: string]: any;
+}
 
-let _v3A: THREE.Vector3 = new THREE.Vector3();
-let _v3B: THREE.Vector3 = new THREE.Vector3();
+let _v3A: THREE.Vector3;
+let _v3B: THREE.Vector3;
 export class GamepadCameraControls extends CameraControls {
   private _gamepadIndex: number | null = null;
 
   private _disposableEvents: Array<Function> = [];
+
+  static install(libs: { THREE: THREESubset }): void {
+    _v3A = new libs.THREE.Vector3();
+    _v3B = new libs.THREE.Vector3();
+  }
 
   constructor(
     camera: THREE.PerspectiveCamera | THREE.OrthographicCamera,
