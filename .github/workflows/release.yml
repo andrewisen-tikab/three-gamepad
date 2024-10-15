@@ -32,9 +32,8 @@ jobs:
           git commit -m "🤖 Update version" -a
       - name: Create Pull Request
         id: cpr
-        uses: peter-evans/create-pull-request@v5
+        uses: peter-evans/create-pull-request@v7
         with:
-          token: ${{ secrets.PAT }}
           title: Update version
           body: Automated changes by Bot 🤖
           commit-message: 🤖 Update version
@@ -43,14 +42,13 @@ jobs:
         run: |
           yarn install
           yarn build
-          yarn docs
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3
         with:
           path: "./dist/examples"
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4
     #   - run: npm publish
     #     env:
     #       NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
