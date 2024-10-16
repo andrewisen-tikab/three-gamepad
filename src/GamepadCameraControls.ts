@@ -63,8 +63,8 @@ export const DEFAULT_GAMEPAD_PARAMS: GamePadParams = {
   rotateDelta: 0.02,
   forwardDelta: 0.05,
   sidewaysDelta: 0.05,
-  dollyDelta: 0.05,
-  elevateDelta: 0.01,
+  dollyDelta: 0.1,
+  elevateDelta: 0.1,
 };
 
 /**
@@ -188,7 +188,7 @@ export class GamepadCameraControls extends CameraControls {
       Math.abs(leftStickX) > leftStickXThreshold ||
       Math.abs(leftStickY) > leftStickYThreshold
     ) {
-      this.forward(-leftStickX * forwardDelta, true);
+      this.forward(-leftStickY * forwardDelta, true);
       this.sideways(leftStickX * sidewaysDelta, true);
     }
 
