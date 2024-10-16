@@ -5,6 +5,7 @@ import CameraControls from "camera-controls";
 import { GamepadCameraControls } from "../src";
 
 CameraControls.install({ THREE });
+GamepadCameraControls.install({ THREE });
 
 const stats = new Stats();
 document.body.appendChild(stats.dom);

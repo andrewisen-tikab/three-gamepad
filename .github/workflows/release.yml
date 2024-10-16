@@ -43,6 +43,7 @@ jobs:
         run: |
           yarn install
           yarn build
+          yarn docs
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -50,6 +51,6 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-    #   - run: npm publish
-    #     env:
-    #       NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
