@@ -21,3 +21,8 @@ GamepadCameraControls.install({ THREE });
 
 A live demo can be found at:
 [https://andrewisen-tikab.github.io/three-gamepad/examples/](https://andrewisen-tikab.github.io/three-gamepad/examples/).
+
+## Docs
+
+Auto-generated documentation can be found at:
+[https://andrewisen-tikab.github.io/three-gamepad/docs/](https://andrewisen-tikab.github.io/three-gamepad/docs/)

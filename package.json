@@ -4,6 +4,11 @@
   "version": "0.0.2",
   "type": "module",
   "main": "dist/three-gamepad.js",
+  "keywords": [
+    "three",
+    "threejs",
+    "gamepad"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && vite build -c vite.config.examples.ts",
