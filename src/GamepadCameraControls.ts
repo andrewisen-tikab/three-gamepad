@@ -9,6 +9,65 @@ let _v3A: THREE.Vector3;
 let _v3B: THREE.Vector3;
 
 /**
+ * Represents the threshold values for the gamepad's analog sticks.
+ * These thresholds determine the sensitivity of the right and left sticks
+ * along the X and Y axes.
+ */
+export type Thresholds = {
+  /**
+   * The threshold value for the right stick's X-axis.
+   */
+  rightStickXThreshold: number;
+  /**
+   * The threshold value for the right stick's Y-axis.
+   */
+  rightStickYThreshold: number;
+  /**
+   * The threshold value for the left stick's X-axis.
+   */
+  leftStickXThreshold: number;
+  /**
+   * The threshold value for the left stick's Y-axis.
+   */
+  leftStickYThreshold: number;
+  /**
+   * The threshold value for the right trigger.
+   */
+  rightTriggerThreshold: number;
+  /**
+   * The threshold value for the left trigger.
+   */
+  leftTriggerThreshold: number;
+};
+
+/**
+ * Represents the delta values for the right and left gamepad sticks.
+ */
+export type Deltas = {
+  rotateDelta: number;
+  forwardDelta: number;
+  sidewaysDelta: number;
+  dollyDelta: number;
+  elevateDelta: number;
+};
+
+export type GamePadParams = Thresholds & Deltas;
+
+export const DEFAULT_GAMEPAD_PARAMS: GamePadParams = {
+  rightStickXThreshold: 0.1,
+  rightStickYThreshold: 0.1,
+  leftStickXThreshold: 0.1,
+  leftStickYThreshold: 0.1,
+  rightTriggerThreshold: 0.1,
+  leftTriggerThreshold: 0.1,
+  rotateDelta: 0.02,
+  forwardDelta: 0.05,
+  sidewaysDelta: 0.05,
+  dollyDelta: 0.05,
+  elevateDelta: 0.01,
+};
+
+/**
  * GamepadCameraControls extends the CameraControls class to provide camera control
  * using a gamepad. It listens for gamepad connection and disconnection events and
  * processes gamepad input to control the camera's rotation, movement, zoom, and elevation.
@@ -25,11 +84,15 @@ export class GamepadCameraControls extends CameraControls {
     _v3B = new libs.THREE.Vector3();
   }
 
+  public params: GamePadParams;
+
   constructor(
     camera: THREE.PerspectiveCamera | THREE.OrthographicCamera,
-    domElement: HTMLElement
+    domElement: HTMLElement,
+    params: GamePadParams = DEFAULT_GAMEPAD_PARAMS
   ) {
     super(camera, domElement);
+    this.params = params;
 
     const onGamepadConnected = (event: GamepadEvent) => {
       console.log("Gamepad connected:", event.gamepad);
@@ -91,7 +154,22 @@ export class GamepadCameraControls extends CameraControls {
     const leftStickY = gamepad.axes[1];
 
     // const moveSpeed = 0.1;
-    const stickThreshold = 0.1;
+    const {
+      rightStickXThreshold,
+      rightStickYThreshold,
+      leftStickXThreshold,
+      leftStickYThreshold,
+      rightTriggerThreshold,
+      leftTriggerThreshold,
+    } = this.params;
+
+    const {
+      rotateDelta,
+      forwardDelta,
+      sidewaysDelta,
+      dollyDelta,
+      elevateDelta,
+    } = this.params;
 
     const rt = gamepad.buttons[7].value; // Right Trigger
     const lt = gamepad.buttons[6].value; // Left Trigger
@@ -101,39 +179,37 @@ export class GamepadCameraControls extends CameraControls {
 
     // Rotate camera based on stick input
     if (
-      Math.abs(rightStickX) > stickThreshold ||
-      Math.abs(rightStickY) > stickThreshold
+      Math.abs(rightStickX) > rightStickXThreshold ||
+      Math.abs(rightStickY) > rightStickYThreshold
     ) {
-      this.rotate(-rightStickX * 0.02, -rightStickY * 0.02, true);
+      this.rotate(-rightStickX * rotateDelta, -rightStickY * rotateDelta, true);
     }
     if (
-      Math.abs(leftStickX) > stickThreshold ||
-      Math.abs(leftStickY) > stickThreshold
+      Math.abs(leftStickX) > leftStickXThreshold ||
+      Math.abs(leftStickY) > leftStickYThreshold
     ) {
-      this.forward(-leftStickY * 0.05, true);
-      this.sideways(leftStickX * 0.05, true);
+      this.forward(-leftStickX * forwardDelta, true);
+      this.sideways(leftStickX * sidewaysDelta, true);
     }
-
-    // this.dolly(-rightStickY * 0.05, true);
 
     // Zoom in and out based on trigger values
     if (rt > 0.1) {
       // Zoom in
-      this.dolly(rt * 0.05, true);
+      this.dolly(rt * dollyDelta, true);
     }
     if (lt > 0.1) {
       // Zoom out
-      this.dolly(-lt * 0.05, true);
+      this.dolly(-lt * dollyDelta, true);
     }
 
     // Move up and down based on bumper values
-    if (rb > 0.1) {
+    if (rb > rightTriggerThreshold) {
       // Move up
-      this.elevate(rb * 0.01, true);
+      this.elevate(rb * elevateDelta, true);
     }
-    if (lb > 0.1) {
+    if (lb > leftTriggerThreshold) {
       // Move down
-      this.elevate(-lb * 0.01, true);
+      this.elevate(-lb * elevateDelta, true);
     }
   }
 
