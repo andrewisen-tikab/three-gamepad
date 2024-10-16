@@ -5,7 +5,17 @@ It also features a drop-in replacement for the [camera-controls](https://github.
 
 ## Installation
 
-TODO:
+Install it with npm:
+
+```bash
+npm install three-gamepad
+```
+
+or yarn:
+
+```bash
+yarn add three-gamepad
+```
 
 ## Usage
 
