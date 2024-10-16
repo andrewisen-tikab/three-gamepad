@@ -13,6 +13,7 @@
     "@types/three": "^0.169.0",
     "camera-controls": "^2.9.0",
     "three": "^0.169.0",
+    "typedoc": "^0.26.10",
     "typescript": "^5.5.3",
     "vite": "^5.4.8",
     "vite-plugin-dts": "^4.2.4"
