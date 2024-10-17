@@ -127,9 +127,11 @@ export class GamepadCameraControls extends CameraControls {
     this.state.left = gamepad.buttons[14].pressed; // D-Pad Left
     this.state.right = gamepad.buttons[15].pressed; // D-Pad Right
 
+    this.state.rightStick = gamepad.buttons[10].pressed; // Right Stick
     this.state.rightStickX = gamepad.axes[2]; // Right Stick X
     this.state.rightStickY = gamepad.axes[3]; // Right Stick Y
 
+    this.state.leftStick = gamepad.buttons[11].pressed; // Left Stick
     this.state.leftStickX = gamepad.axes[0]; // Left Stick X
     this.state.leftStickY = gamepad.axes[1]; // Left Stick Y
 

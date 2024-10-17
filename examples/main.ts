@@ -64,6 +64,8 @@ const folderConfigs: FolderConfig[] = [
   {
     name: "Shoulder Buttons",
     buttons: [
+      { property: "rightStick", name: "Right Stick" },
+      { property: "leftStick", name: "Left Stick" },
       { property: "rightTrigger", name: "Right Trigger" },
       { property: "leftTrigger", name: "Left Trigger" },
       { property: "rightBumper", name: "Right Bumper" },
