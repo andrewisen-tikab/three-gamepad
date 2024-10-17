@@ -1,1 +1,1 @@
-export * from "./GamepadCameraControls";
+export * from "./camera-controls/GamepadCameraControls";
