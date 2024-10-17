@@ -1,10 +1,10 @@
 import CameraControls from "camera-controls";
 import * as THREE from "three";
-import type { GamePadParams, XboxGamepadParams } from "./types";
+import type { GamePadParams, XboxGamepadParams } from "../types";
 import {
   DEFAULT_GAMEPAD_PARAMS,
   DEFAULT_XBOX_GAMEPAD_PARAMS,
-} from "./constants";
+} from "../constants";
 export type THREESubset = {
   Vector3: typeof THREE.Vector3;
   [key: string]: any;
