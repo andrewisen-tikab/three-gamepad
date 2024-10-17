@@ -117,6 +117,7 @@ export type XboxGamePadTriggers = {
 };
 
 export type XboxGamePadSticks = {
+  leftStick: boolean;
   /**
    * The value of the left stick along the X-axis.
    */
@@ -125,6 +126,7 @@ export type XboxGamePadSticks = {
    * The value of the left stick along the Y-axis.
    */
   leftStickY: number;
+  rightStick: boolean;
   /**
    * The value of the right stick along the X-axis.
    */

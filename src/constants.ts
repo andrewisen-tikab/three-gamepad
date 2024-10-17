@@ -33,4 +33,6 @@ export const DEFAULT_XBOX_GAMEPAD_PARAMS = {
   rightStickY: 0,
   start: false,
   back: false,
+  leftStick: false,
+  rightStick: false,
 } as const satisfies XboxGamepadParams;
