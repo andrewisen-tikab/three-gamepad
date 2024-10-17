@@ -1,4 +1,67 @@
 /**
+ * Represents the threshold values for the gamepad's analog sticks.
+ * These thresholds determine the sensitivity of the right and left sticks
+ * along the X and Y axes.
+ */
+export type Thresholds = {
+  /**
+   * The threshold value for the right stick's X-axis.
+   */
+  rightStickXThreshold: number;
+  /**
+   * The threshold value for the right stick's Y-axis.
+   */
+  rightStickYThreshold: number;
+  /**
+   * The threshold value for the left stick's X-axis.
+   */
+  leftStickXThreshold: number;
+  /**
+   * The threshold value for the left stick's Y-axis.
+   */
+  leftStickYThreshold: number;
+  /**
+   * The threshold value for the right trigger.
+   */
+  rightTriggerThreshold: number;
+  /**
+   * The threshold value for the left trigger.
+   */
+  leftTriggerThreshold: number;
+};
+
+/**
+ * Represents the delta values for the right and left gamepad sticks.
+ */
+export type Deltas = {
+  /**
+   * The amount to rotate the camera based on the right stick's input.
+   */
+  rotateDelta: number;
+  /**
+   * The amount to move the camera forward based on the left stick's input.
+   */
+  forwardDelta: number;
+  /**
+   * The amount to move the camera sideways based on the left stick's input.
+   */
+  sidewaysDelta: number;
+  /**
+   * The amount to zoom the camera in and out based on the trigger values.
+   */
+  dollyDelta: number;
+  /**
+   * The amount to elevate the camera based on the right stick's input.
+   */
+  elevateDelta: number;
+};
+
+/**
+ * Represents the parameters for a gamepad, combining thresholds and deltas.
+ */
+export type GamePadParams = Thresholds & Deltas;
+
+/**
  * Represents the state of the face buttons on an Xbox gamepad.
  */
 export type XboxGamePadFaceButtons = {

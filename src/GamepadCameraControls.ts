@@ -1,5 +1,7 @@
 import CameraControls from "camera-controls";
 import * as THREE from "three";
+import type { GamePadParams } from "./types";
+import { DEFAULT_GAMEPAD_PARAMS } from "./constants";
 export type THREESubset = {
   Vector3: typeof THREE.Vector3;
   [key: string]: any;
@@ -7,65 +9,6 @@ export type THREESubset = {
 
 let _v3A: THREE.Vector3;
 let _v3B: THREE.Vector3;
-
-/**
- * Represents the threshold values for the gamepad's analog sticks.
- * These thresholds determine the sensitivity of the right and left sticks
- * along the X and Y axes.
- */
-export type Thresholds = {
-  /**
-   * The threshold value for the right stick's X-axis.
-   */
-  rightStickXThreshold: number;
-  /**
-   * The threshold value for the right stick's Y-axis.
-   */
-  rightStickYThreshold: number;
-  /**
-   * The threshold value for the left stick's X-axis.
-   */
-  leftStickXThreshold: number;
-  /**
-   * The threshold value for the left stick's Y-axis.
-   */
-  leftStickYThreshold: number;
-  /**
-   * The threshold value for the right trigger.
-   */
-  rightTriggerThreshold: number;
-  /**
-   * The threshold value for the left trigger.
-   */
-  leftTriggerThreshold: number;
-};
-
-/**
- * Represents the delta values for the right and left gamepad sticks.
- */
-export type Deltas = {
-  rotateDelta: number;
-  forwardDelta: number;
-  sidewaysDelta: number;
-  dollyDelta: number;
-  elevateDelta: number;
-};
-
-export type GamePadParams = Thresholds & Deltas;
-
-export const DEFAULT_GAMEPAD_PARAMS: GamePadParams = {
-  rightStickXThreshold: 0.1,
-  rightStickYThreshold: 0.1,
-  leftStickXThreshold: 0.1,
-  leftStickYThreshold: 0.1,
-  rightTriggerThreshold: 0.1,
-  leftTriggerThreshold: 0.1,
-  rotateDelta: 0.02,
-  forwardDelta: 0.05,
-  sidewaysDelta: 0.05,
-  dollyDelta: 0.1,
-  elevateDelta: 0.1,
-};
 
 /**
  * GamepadCameraControls extends the CameraControls class to provide camera control
