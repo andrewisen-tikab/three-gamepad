@@ -2,13 +2,18 @@ import "./styles.css";
 import * as THREE from "three";
 import Stats from "three/addons/libs/stats.module.js";
 import CameraControls from "camera-controls";
+import GUI from "lil-gui";
+
 import { GamepadCameraControls } from "../src";
+import type { XboxGamepadParams } from "../src/types";
 
 CameraControls.install({ THREE });
 GamepadCameraControls.install({ THREE });
 
 const stats = new Stats();
 document.body.appendChild(stats.dom);
+
+const gui = new GUI();
 
 const clock = new THREE.Clock();
 
@@ -49,3 +54,63 @@ function animate() {
 
   renderer.render(scene, camera);
 }
+
+type FolderConfig = {
+  name: string;
+  buttons: { property: keyof XboxGamepadParams; name: string }[];
+};
+
+const folderConfigs: FolderConfig[] = [
+  {
+    name: "Shoulder Buttons",
+    buttons: [
+      { property: "rightTrigger", name: "Right Trigger" },
+      { property: "leftTrigger", name: "Left Trigger" },
+      { property: "rightBumper", name: "Right Bumper" },
+      { property: "leftBumper", name: "Left Bumper" },
+    ],
+  },
+  {
+    name: "Face Buttons",
+    buttons: [
+      { property: "a", name: "Button A" },
+      { property: "b", name: "Button B" },
+      { property: "x", name: "Button X" },
+      { property: "y", name: "Button Y" },
+    ],
+  },
+  {
+    name: "D-Pad",
+    buttons: [
+      { property: "up", name: "D-Pad Up" },
+      { property: "down", name: "D-Pad Down" },
+      { property: "left", name: "D-Pad Left" },
+      { property: "right", name: "D-Pad Right" },
+    ],
+  },
+  {
+    name: "Sticks",
+    buttons: [
+      { property: "rightStickX", name: "Right Stick X" },
+      { property: "rightStickY", name: "Right Stick Y" },
+      { property: "leftStickX", name: "Left Stick X" },
+      { property: "leftStickY", name: "Left Stick Y" },
+    ],
+  },
+];
+
+function addFoldersToGUI(gui, cameraControls, folderConfigs) {
+  folderConfigs.forEach((folderConfig) => {
+    const folder = gui.addFolder(folderConfig.name);
+
+    folderConfig.buttons.forEach((button) => {
+      folder
+        .add(cameraControls.state, button.property)
+        .name(button.name)
+        .disable()
+        .listen();
+    });
+  });
+}
+
+addFoldersToGUI(gui, cameraControls, folderConfigs);
