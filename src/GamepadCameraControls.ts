@@ -1,5 +1,10 @@
 import CameraControls from "camera-controls";
 import * as THREE from "three";
+import type { GamePadParams, XboxGamepadParams } from "./types";
+import {
+  DEFAULT_GAMEPAD_PARAMS,
+  DEFAULT_XBOX_GAMEPAD_PARAMS,
+} from "./constants";
 export type THREESubset = {
   Vector3: typeof THREE.Vector3;
   [key: string]: any;
@@ -7,65 +12,6 @@ export type THREESubset = {
 
 let _v3A: THREE.Vector3;
 let _v3B: THREE.Vector3;
-
-/**
- * Represents the threshold values for the gamepad's analog sticks.
- * These thresholds determine the sensitivity of the right and left sticks
- * along the X and Y axes.
- */
-export type Thresholds = {
-  /**
-   * The threshold value for the right stick's X-axis.
-   */
-  rightStickXThreshold: number;
-  /**
-   * The threshold value for the right stick's Y-axis.
-   */
-  rightStickYThreshold: number;
-  /**
-   * The threshold value for the left stick's X-axis.
-   */
-  leftStickXThreshold: number;
-  /**
-   * The threshold value for the left stick's Y-axis.
-   */
-  leftStickYThreshold: number;
-  /**
-   * The threshold value for the right trigger.
-   */
-  rightTriggerThreshold: number;
-  /**
-   * The threshold value for the left trigger.
-   */
-  leftTriggerThreshold: number;
-};
-
-/**
- * Represents the delta values for the right and left gamepad sticks.
- */
-export type Deltas = {
-  rotateDelta: number;
-  forwardDelta: number;
-  sidewaysDelta: number;
-  dollyDelta: number;
-  elevateDelta: number;
-};
-
-export type GamePadParams = Thresholds & Deltas;
-
-export const DEFAULT_GAMEPAD_PARAMS: GamePadParams = {
-  rightStickXThreshold: 0.1,
-  rightStickYThreshold: 0.1,
-  leftStickXThreshold: 0.1,
-  leftStickYThreshold: 0.1,
-  rightTriggerThreshold: 0.1,
-  leftTriggerThreshold: 0.1,
-  rotateDelta: 0.02,
-  forwardDelta: 0.05,
-  sidewaysDelta: 0.05,
-  dollyDelta: 0.1,
-  elevateDelta: 0.1,
-};
 
 /**
  * GamepadCameraControls extends the CameraControls class to provide camera control
@@ -86,6 +32,8 @@ export class GamepadCameraControls extends CameraControls {
 
   public params: GamePadParams;
 
+  public state: XboxGamepadParams;
+
   constructor(
     camera: THREE.PerspectiveCamera | THREE.OrthographicCamera,
     domElement: HTMLElement,
@@ -93,6 +41,7 @@ export class GamepadCameraControls extends CameraControls {
   ) {
     super(camera, domElement);
     this.params = params;
+    this.state = DEFAULT_XBOX_GAMEPAD_PARAMS;
 
     const onGamepadConnected = (event: GamepadEvent) => {
       console.log("Gamepad connected:", event.gamepad);
@@ -147,20 +96,12 @@ export class GamepadCameraControls extends CameraControls {
     const gamepad = navigator.getGamepads()[this._gamepadIndex!];
     if (!gamepad) return;
 
-    const rightStickX = gamepad.axes[2];
-    const rightStickY = gamepad.axes[3];
-
-    const leftStickX = gamepad.axes[0];
-    const leftStickY = gamepad.axes[1];
-
     // const moveSpeed = 0.1;
     const {
       rightStickXThreshold,
       rightStickYThreshold,
       leftStickXThreshold,
       leftStickYThreshold,
-      rightTriggerThreshold,
-      leftTriggerThreshold,
     } = this.params;
 
     const {
@@ -171,45 +112,69 @@ export class GamepadCameraControls extends CameraControls {
       elevateDelta,
     } = this.params;
 
-    const rt = gamepad.buttons[7].value; // Right Trigger
-    const lt = gamepad.buttons[6].value; // Left Trigger
+    this.state.rightTrigger = gamepad.buttons[7].value; // Right Trigger
+    this.state.leftTrigger = gamepad.buttons[6].value; // Left Trigger
+    this.state.rightBumper = gamepad.buttons[5].pressed; // Right Bumper
+    this.state.leftBumper = gamepad.buttons[4].pressed; // Left Bumper
 
-    const rb = gamepad.buttons[5].value; // Right Bumper
-    const lb = gamepad.buttons[4].value; // Left Bumper
+    this.state.a = gamepad.buttons[0].pressed; // Button A
+    this.state.b = gamepad.buttons[1].pressed; // Button B
+    this.state.x = gamepad.buttons[2].pressed; // Button X
+    this.state.y = gamepad.buttons[3].pressed; // Button Y
+
+    this.state.up = gamepad.buttons[12].pressed; // D-Pad Up
+    this.state.down = gamepad.buttons[13].pressed; // D-Pad Down
+    this.state.left = gamepad.buttons[14].pressed; // D-Pad Left
+    this.state.right = gamepad.buttons[15].pressed; // D-Pad Right
+
+    this.state.rightStick = gamepad.buttons[10].pressed; // Right Stick
+    this.state.rightStickX = gamepad.axes[2]; // Right Stick X
+    this.state.rightStickY = gamepad.axes[3]; // Right Stick Y
+
+    this.state.leftStick = gamepad.buttons[11].pressed; // Left Stick
+    this.state.leftStickX = gamepad.axes[0]; // Left Stick X
+    this.state.leftStickY = gamepad.axes[1]; // Left Stick Y
+
+    this.state.start = gamepad.buttons[9].pressed; // Start
+    this.state.back = gamepad.buttons[8].pressed; // Back
 
     // Rotate camera based on stick input
     if (
-      Math.abs(rightStickX) > rightStickXThreshold ||
-      Math.abs(rightStickY) > rightStickYThreshold
+      Math.abs(this.state.rightStickX) > rightStickXThreshold ||
+      Math.abs(this.state.rightStickY) > rightStickYThreshold
     ) {
-      this.rotate(-rightStickX * rotateDelta, -rightStickY * rotateDelta, true);
+      this.rotate(
+        -this.state.rightStickX * rotateDelta,
+        -this.state.rightStickY * rotateDelta,
+        true
+      );
     }
     if (
-      Math.abs(leftStickX) > leftStickXThreshold ||
-      Math.abs(leftStickY) > leftStickYThreshold
+      Math.abs(this.state.leftStickX) > leftStickXThreshold ||
+      Math.abs(this.state.leftStickY) > leftStickYThreshold
     ) {
-      this.forward(-leftStickY * forwardDelta, true);
-      this.sideways(leftStickX * sidewaysDelta, true);
+      this.forward(-this.state.leftStickY * forwardDelta, true);
+      this.sideways(this.state.leftStickX * sidewaysDelta, true);
     }
 
     // Zoom in and out based on trigger values
-    if (rt > 0.1) {
+    if (this.state.rightTrigger > 0.1) {
       // Zoom in
-      this.dolly(rt * dollyDelta, true);
+      this.dolly(this.state.rightTrigger * dollyDelta, true);
     }
-    if (lt > 0.1) {
+    if (this.state.leftTrigger > 0.1) {
       // Zoom out
-      this.dolly(-lt * dollyDelta, true);
+      this.dolly(-this.state.leftTrigger * dollyDelta, true);
     }
 
     // Move up and down based on bumper values
-    if (rb > rightTriggerThreshold) {
+    if (this.state.rightBumper) {
       // Move up
-      this.elevate(rb * elevateDelta, true);
+      this.elevate(elevateDelta, true);
     }
-    if (lb > leftTriggerThreshold) {
+    if (this.state.leftBumper) {
       // Move down
-      this.elevate(-lb * elevateDelta, true);
+      this.elevate(-elevateDelta, true);
     }
   }
 
