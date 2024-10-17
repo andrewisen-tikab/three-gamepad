@@ -133,6 +133,9 @@ export class GamepadCameraControls extends CameraControls {
     this.state.leftStickX = gamepad.axes[0]; // Left Stick X
     this.state.leftStickY = gamepad.axes[1]; // Left Stick Y
 
+    this.state.start = gamepad.buttons[9].pressed; // Start
+    this.state.back = gamepad.buttons[8].pressed; // Back
+
     // Rotate camera based on stick input
     if (
       Math.abs(this.state.rightStickX) > rightStickXThreshold ||

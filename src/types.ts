@@ -146,6 +146,11 @@ export type XboxGamePadShoulderButtons = {
   rightBumper: boolean;
 };
 
+export type XboxGamePadMisc = {
+  start: boolean;
+  back: boolean;
+};
+
 /**
  * Represents the parameters for an Xbox gamepad, combining various button and control types.
  */
@@ -153,4 +158,5 @@ export type XboxGamepadParams = XboxGamePadFaceButtons &
   XboxGamePadDPad &
   XboxGamePadTriggers &
   XboxGamePadSticks &
-  XboxGamePadShoulderButtons;
+  XboxGamePadShoulderButtons &
+  XboxGamePadMisc;

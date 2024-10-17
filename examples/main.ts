@@ -97,6 +97,13 @@ const folderConfigs: FolderConfig[] = [
       { property: "leftStickY", name: "Left Stick Y" },
     ],
   },
+  {
+    name: "Misc",
+    buttons: [
+      { property: "start", name: "Start" },
+      { property: "back", name: "Back" },
+    ],
+  },
 ];
 
 function addFoldersToGUI(gui, cameraControls, folderConfigs) {
