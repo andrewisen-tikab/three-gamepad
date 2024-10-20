@@ -582,6 +582,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/signals@npm:^1.0.4":
+  version: 1.0.4
+  resolution: "@types/signals@npm:1.0.4"
+  checksum: 10c0/8b4d1df63361ac448a06874ab40556080fae4ed582507b1f9299dd657d44f04706d7e1b15d21ffc873f0f44492358519f55416323a5a95b37168aa6b0968be6b
+  languageName: node
+  linkType: hard
+
 "@types/stats.js@npm:*":
   version: 0.17.3
   resolution: "@types/stats.js@npm:0.17.3"
@@ -2189,6 +2196,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"signals@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "signals@npm:1.0.0"
+  checksum: 10c0/796b63b32685cf35245d7b407913cad90505277d014ca248055f319f6a3290318b3a8351a49fc054cd333f685b887ae78846167234189ddb0064ec0ce7d46147
+  languageName: node
+  linkType: hard
+
 "smart-buffer@npm:^4.2.0":
   version: 4.2.0
   resolution: "smart-buffer@npm:4.2.0"
@@ -2359,9 +2373,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "three-gamepad@workspace:."
   dependencies:
+    "@types/signals": "npm:^1.0.4"
     "@types/three": "npm:^0.169.0"
     camera-controls: "npm:^2.9.0"
     lil-gui: "npm:^0.19.2"
+    signals: "npm:^1.0.0"
     three: "npm:^0.169.0"
     typedoc: "npm:^0.26.10"
     typescript: "npm:^5.5.3"

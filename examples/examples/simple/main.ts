@@ -1,11 +1,11 @@
-import "./styles.css";
+import "../styles.css";
 import * as THREE from "three";
 import Stats from "three/addons/libs/stats.module.js";
 import CameraControls from "camera-controls";
 import GUI from "lil-gui";
 
-import { GamepadCameraControls } from "../src";
-import type { XboxGamepadParams } from "../src/types";
+import { GamepadCameraControls } from "../../../src";
+import type { XboxGamepadParams } from "../../../src/types";
 
 CameraControls.install({ THREE });
 GamepadCameraControls.install({ THREE });
