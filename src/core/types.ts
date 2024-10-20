@@ -3,7 +3,13 @@
  */
 export type AbstractGamepadCameraControls = {
   /**
-   * Retrieves the index of the connected gamepad.
+   * Retrieves a list of connected gamepads.
+   *
+   * @returns {Readonly<Gamepad[]>} An array of connected gamepads.
+   */
+  getGamepads(): Readonly<Gamepad[]>;
+  /**
+   * Retrieves the index of the active gamepad.
    */
   getGamepadIndex(): number | null;
   /**

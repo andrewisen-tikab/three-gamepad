@@ -81,6 +81,10 @@ export class GamepadCameraControls
     });
   }
 
+  public getGamepads(): Readonly<Gamepad[]> {
+    return Array.from(this._gamepads);
+  }
+
   public getGamepadIndex(): number | null {
     return this._gamepadIndex;
   }
