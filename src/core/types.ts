@@ -1,3 +1,6 @@
+import { type XboxGamepadParams } from "../types";
+import { Events } from "./events";
+
 /**
  * Interface representing the controls for a gamepad camera.
  */
@@ -23,4 +26,12 @@ export type AbstractGamepadCameraControls = {
    * @returns {boolean} `true` if a gamepad is connected, otherwise `false`.
    */
   hasGamepad(): boolean;
+  /**
+   * The parameters for the gamepad controls.
+   */
+  state: XboxGamepadParams;
+  /**
+   * The events associated with the gamepad controls.
+   */
+  events: typeof Events;
 };

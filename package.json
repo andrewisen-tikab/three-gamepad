@@ -16,6 +16,7 @@
     "docs": "typedoc"
   },
   "devDependencies": {
+    "@types/signals": "^1.0.4",
     "@types/three": "^0.169.0",
     "camera-controls": "^2.9.0",
     "lil-gui": "^0.19.2",
@@ -27,5 +28,8 @@
   },
   "peerDependencies": {
     "camera-control": "^2.9.0"
+  },
+  "dependencies": {
+    "signals": "^1.0.0"
   }
 }

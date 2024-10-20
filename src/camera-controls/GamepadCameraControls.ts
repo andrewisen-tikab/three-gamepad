@@ -1,12 +1,13 @@
 import CameraControls from "camera-controls";
 import { type THREESubset } from "camera-controls/dist/types";
 import * as THREE from "three";
-import type { GamePadParams, XboxGamepadParams } from "../types";
+import type { GamepadKeys, GamePadParams, XboxGamepadParams } from "../types";
 import {
   DEFAULT_GAMEPAD_PARAMS,
   DEFAULT_XBOX_GAMEPAD_PARAMS,
 } from "../constants";
 import { type AbstractGamepadCameraControls } from "../core/types";
+import { Events } from "../core/events";
 
 let _v3A: THREE.Vector3;
 let _v3B: THREE.Vector3;
@@ -42,6 +43,10 @@ export class GamepadCameraControls
 
   public state: XboxGamepadParams;
 
+  private _previousState: Record<string, unknown>;
+
+  public events: typeof Events = Events;
+
   constructor(
     camera: THREE.PerspectiveCamera | THREE.OrthographicCamera,
     domElement: HTMLElement,
@@ -50,6 +55,8 @@ export class GamepadCameraControls
     super(camera, domElement);
     this.params = params;
     this.state = DEFAULT_XBOX_GAMEPAD_PARAMS;
+    this._previousState = { ...this.state };
+
     this._gamepads = new Set<Gamepad>();
 
     const onGamepadConnected = (event: GamepadEvent) => {
@@ -120,7 +127,6 @@ export class GamepadCameraControls
     const gamepad = navigator.getGamepads()[this._gamepadIndex!];
     if (!gamepad) return;
 
-    // const moveSpeed = 0.1;
     const {
       rightStickXThreshold,
       rightStickYThreshold,
@@ -161,6 +167,29 @@ export class GamepadCameraControls
 
     this.state.start = gamepad.buttons[9].pressed; // Start
     this.state.back = gamepad.buttons[8].pressed; // Back
+
+    Object.entries(this.state).forEach(([key, value]) => {
+      const previousValue = this._previousState[key];
+      if (value === previousValue) return;
+
+      this._previousState[key] = value;
+      const typedKey = key as unknown as GamepadKeys;
+      const event = this.events[typedKey];
+      if (!event) return;
+      if (value == true || value == 1) {
+        event.dispatchEvent({ type: "before" });
+      } else {
+        event.dispatchEvent({ type: "after" });
+      }
+    });
+
+    Object.entries(this.state).forEach(([key, value]) => {
+      if (value !== true) return;
+      const typedKey = key as unknown as GamepadKeys;
+      const event = this.events[typedKey];
+      if (!event) return;
+      event.dispatchEvent({ type: "on" });
+    });
 
     // Rotate camera based on stick input
     if (

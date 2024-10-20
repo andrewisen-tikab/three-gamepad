@@ -1,3 +1,19 @@
+export type GamepadKeys =
+  | "x"
+  | "y"
+  | "a"
+  | "b"
+  | "left"
+  | "right"
+  | "up"
+  | "down"
+  | "leftStick"
+  | "rightStick"
+  | "leftBumper"
+  | "rightBumper"
+  | "start"
+  | "back";
+
 /**
  * Represents the threshold values for the gamepad's analog sticks.
  * These thresholds determine the sensitivity of the right and left sticks

@@ -582,6 +582,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/signals@npm:^1.0.4":
+  version: 1.0.4
+  resolution: "@types/signals@npm:1.0.4"
+  checksum: 10c0/8b4d1df63361ac448a06874ab40556080fae4ed582507b1f9299dd657d44f04706d7e1b15d21ffc873f0f44492358519f55416323a5a95b37168aa6b0968be6b
+  languageName: node
+  linkType: hard
+
 "@types/stats.js@npm:*":
   version: 0.17.3
   resolution: "@types/stats.js@npm:0.17.3"
@@ -1277,13 +1284,6 @@ __metadata:
   version: 1.1.2
   resolution: "function-bind@npm:1.1.2"
   checksum: 10c0/d8680ee1e5fcd4c197e4ac33b2b4dce03c71f4d91717292785703db200f5c21f977c568d28061226f9b5900cbcd2c84463646134fd5337e7925e0942bc3f46d5
-  languageName: node
-  linkType: hard
-
-"gamecontroller.js@npm:^1.5.0":
-  version: 1.5.0
-  resolution: "gamecontroller.js@npm:1.5.0"
-  checksum: 10c0/47684383e6e5a27d1335d3434df92865658f22f0f5eeda0087c116032d78d5c887b79a372f242eba9c39b222df150f42c0ffe953a2f1ed4ee40851abadb63f5d
   languageName: node
   linkType: hard
 
@@ -2196,6 +2196,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"signals@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "signals@npm:1.0.0"
+  checksum: 10c0/796b63b32685cf35245d7b407913cad90505277d014ca248055f319f6a3290318b3a8351a49fc054cd333f685b887ae78846167234189ddb0064ec0ce7d46147
+  languageName: node
+  linkType: hard
+
 "smart-buffer@npm:^4.2.0":
   version: 4.2.0
   resolution: "smart-buffer@npm:4.2.0"
@@ -2366,10 +2373,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "three-gamepad@workspace:."
   dependencies:
+    "@types/signals": "npm:^1.0.4"
     "@types/three": "npm:^0.169.0"
     camera-controls: "npm:^2.9.0"
-    gamecontroller.js: "npm:^1.5.0"
     lil-gui: "npm:^0.19.2"
+    signals: "npm:^1.0.0"
     three: "npm:^0.169.0"
     typedoc: "npm:^0.26.10"
     typescript: "npm:^5.5.3"
