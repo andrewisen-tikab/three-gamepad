@@ -6,6 +6,7 @@ import {
   DEFAULT_GAMEPAD_PARAMS,
   DEFAULT_XBOX_GAMEPAD_PARAMS,
 } from "../constants";
+import { type AbstractGamepadCameraControls } from "../core/types";
 
 let _v3A: THREE.Vector3;
 let _v3B: THREE.Vector3;
@@ -17,8 +18,13 @@ let _v3B: THREE.Vector3;
  *
  * @extends CameraControls
  */
-export class GamepadCameraControls extends CameraControls {
+export class GamepadCameraControls
+  extends CameraControls
+  implements AbstractGamepadCameraControls
+{
   private _gamepadIndex: number | null = null;
+
+  private _gamepads: Set<Gamepad>;
 
   private _disposableEvents: Array<Function> = [];
 
@@ -40,15 +46,22 @@ export class GamepadCameraControls extends CameraControls {
     super(camera, domElement);
     this.params = params;
     this.state = DEFAULT_XBOX_GAMEPAD_PARAMS;
+    this._gamepads = new Set<Gamepad>();
 
     const onGamepadConnected = (event: GamepadEvent) => {
       console.log("Gamepad connected:", event.gamepad);
+
       this._gamepadIndex = event.gamepad.index;
+      this._gamepads.add(event.gamepad);
     };
 
-    const onGamepadDisconnect = () => {
+    const onGamepadDisconnect = (event: GamepadEvent) => {
       console.log("Gamepad disconnected");
-      this._gamepadIndex = null;
+
+      this._gamepads.delete(event.gamepad);
+      if (event.gamepad.index === this._gamepadIndex) {
+        this._gamepadIndex = null;
+      }
     };
 
     window.addEventListener("gamepadconnected", onGamepadConnected);
@@ -62,11 +75,14 @@ export class GamepadCameraControls extends CameraControls {
     });
   }
 
-  /**
-   * Checks if a gamepad is connected.
-   *
-   * @returns {boolean} `true` if a gamepad is connected, otherwise `false`.
-   */
+  public getGamepadIndex(): number | null {
+    return this._gamepadIndex;
+  }
+
+  public setGamepadIndex(index: number): void {
+    this._gamepadIndex = index;
+  }
+
   public hasGamepad(): boolean {
     return this._gamepadIndex !== null;
   }
