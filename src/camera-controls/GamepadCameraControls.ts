@@ -1,14 +1,11 @@
 import CameraControls from "camera-controls";
+import { type THREESubset } from "camera-controls/dist/types";
 import * as THREE from "three";
 import type { GamePadParams, XboxGamepadParams } from "../types";
 import {
   DEFAULT_GAMEPAD_PARAMS,
   DEFAULT_XBOX_GAMEPAD_PARAMS,
 } from "../constants";
-export type THREESubset = {
-  Vector3: typeof THREE.Vector3;
-  [key: string]: any;
-};
 
 let _v3A: THREE.Vector3;
 let _v3B: THREE.Vector3;
@@ -28,6 +25,7 @@ export class GamepadCameraControls extends CameraControls {
   static install(libs: { THREE: THREESubset }): void {
     _v3A = new libs.THREE.Vector3();
     _v3B = new libs.THREE.Vector3();
+    CameraControls.install({ THREE: libs.THREE });
   }
 
   public params: GamePadParams;
