@@ -26,6 +26,10 @@ export class GamepadCameraControls
 
   private _gamepads: Set<Gamepad>;
 
+  /**
+   * An array to store disposable event handler functions.
+   * These functions can be called to remove event listeners or perform cleanup tasks.
+   */
   private _disposableEvents: Array<Function> = [];
 
   static install(libs: { THREE: THREESubset }): void {
@@ -223,5 +227,13 @@ export class GamepadCameraControls
 
     const to = _v3B.copy(this._targetEnd).add(_v3A);
     return this.moveTo(to.x, to.y, to.z, enableTransition);
+  }
+
+  /**
+   * Dispose the cameraControls instance itself, remove all eventListeners.
+   */
+  public dispose() {
+    super.dispose();
+    this._disposableEvents.forEach((dispose) => dispose());
   }
 }
