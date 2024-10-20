@@ -6,6 +6,7 @@ import {
   DEFAULT_GAMEPAD_PARAMS,
   DEFAULT_XBOX_GAMEPAD_PARAMS,
 } from "../constants";
+import { type AbstractGamepadCameraControls } from "../core/types";
 
 let _v3A: THREE.Vector3;
 let _v3B: THREE.Vector3;
@@ -17,9 +18,18 @@ let _v3B: THREE.Vector3;
  *
  * @extends CameraControls
  */
-export class GamepadCameraControls extends CameraControls {
+export class GamepadCameraControls
+  extends CameraControls
+  implements AbstractGamepadCameraControls
+{
   private _gamepadIndex: number | null = null;
 
+  private _gamepads: Set<Gamepad>;
+
+  /**
+   * An array to store disposable event handler functions.
+   * These functions can be called to remove event listeners or perform cleanup tasks.
+   */
   private _disposableEvents: Array<Function> = [];
 
   static install(libs: { THREE: THREESubset }): void {
@@ -40,15 +50,24 @@ export class GamepadCameraControls extends CameraControls {
     super(camera, domElement);
     this.params = params;
     this.state = DEFAULT_XBOX_GAMEPAD_PARAMS;
+    this._gamepads = new Set<Gamepad>();
 
     const onGamepadConnected = (event: GamepadEvent) => {
       console.log("Gamepad connected:", event.gamepad);
-      this._gamepadIndex = event.gamepad.index;
+
+      this._gamepads.add(event.gamepad);
+      if (this._gamepadIndex === null && event.gamepad.mapping === "standard") {
+        this._gamepadIndex = event.gamepad.index;
+      }
     };
 
-    const onGamepadDisconnect = () => {
+    const onGamepadDisconnect = (event: GamepadEvent) => {
       console.log("Gamepad disconnected");
-      this._gamepadIndex = null;
+
+      this._gamepads.delete(event.gamepad);
+      if (event.gamepad.index === this._gamepadIndex) {
+        this._gamepadIndex = null;
+      }
     };
 
     window.addEventListener("gamepadconnected", onGamepadConnected);
@@ -62,11 +81,18 @@ export class GamepadCameraControls extends CameraControls {
     });
   }
 
-  /**
-   * Checks if a gamepad is connected.
-   *
-   * @returns {boolean} `true` if a gamepad is connected, otherwise `false`.
-   */
+  public getGamepads(): Readonly<Gamepad[]> {
+    return Array.from(this._gamepads);
+  }
+
+  public getGamepadIndex(): number | null {
+    return this._gamepadIndex;
+  }
+
+  public setGamepadIndex(index: number): void {
+    this._gamepadIndex = index;
+  }
+
   public hasGamepad(): boolean {
     return this._gamepadIndex !== null;
   }
@@ -207,5 +233,13 @@ export class GamepadCameraControls extends CameraControls {
 
     const to = _v3B.copy(this._targetEnd).add(_v3A);
     return this.moveTo(to.x, to.y, to.z, enableTransition);
+  }
+
+  /**
+   * Dispose the cameraControls instance itself, remove all eventListeners.
+   */
+  public dispose() {
+    super.dispose();
+    this._disposableEvents.forEach((dispose) => dispose());
   }
 }
