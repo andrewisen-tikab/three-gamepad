@@ -56,7 +56,7 @@ export class GamepadCameraControls
       console.log("Gamepad connected:", event.gamepad);
 
       this._gamepads.add(event.gamepad);
-      if (this._gamepadIndex === null) {
+      if (this._gamepadIndex === null && event.gamepad.mapping === "standard") {
         this._gamepadIndex = event.gamepad.index;
       }
     };
