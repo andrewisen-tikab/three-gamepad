@@ -55,8 +55,10 @@ export class GamepadCameraControls
     const onGamepadConnected = (event: GamepadEvent) => {
       console.log("Gamepad connected:", event.gamepad);
 
-      this._gamepadIndex = event.gamepad.index;
       this._gamepads.add(event.gamepad);
+      if (this._gamepadIndex === null) {
+        this._gamepadIndex = event.gamepad.index;
+      }
     };
 
     const onGamepadDisconnect = (event: GamepadEvent) => {
